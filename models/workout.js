@@ -44,8 +44,14 @@ const workoutSchema = new Schema({
 }
 );
 
-
-
-const Workout = mongoose.model("Workout", workoutSchema);
+// Creates a virtual property `totalDuration` that's computed by reducing things down to duration.
+workoutSchema.virtual("totalDuration").get(function () {
+return this.exercises.reduce((total, exercise) => {
+    return total + exercise.duration;
+}, 0)
   
-module.exports = Workout;
+});
+  
+  const Workout = mongoose.model("Workout", workoutSchema);
+  
+  module.exports = Workout;
